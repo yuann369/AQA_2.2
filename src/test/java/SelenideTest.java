@@ -36,6 +36,7 @@ public class SelenideTest {
 
     @Test
     void test() {
+        open("http://localhost:9999");
         $x("//input[@placeholder='Город']").setValue("Самара");
         $("span[data-test-id='date'] input").sendKeys(Keys.CONTROL + "A");
         $("span[data-test-id='date'] input").sendKeys(Keys.DELETE);
