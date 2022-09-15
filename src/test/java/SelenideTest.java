@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,9 +14,13 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class SelenideTest {
 
+    @BeforeEach
+    void setup() {
+        open("http://localhost:9999");
+    }
+
     @Test
     void test() {
-        open("http://localhost:9999/");
         $x("//input[@placeholder='Город']").setValue("Самара");
         $("span[data-test-id='date'] input").sendKeys(Keys.CONTROL + "A");
         $("span[data-test-id='date'] input").sendKeys(Keys.DELETE);
