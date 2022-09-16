@@ -18,25 +18,10 @@ import static com.codeborne.selenide.Selenide.*;
 
 
 public class SelenideTest {
-    WebDriver driver;
-
-    @BeforeAll
-    static void setupAll() {
-        WebDriverManager.chromedriver().setup();
-    }
-
-    @BeforeEach
-    void setup() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
-    }
 
     @Test
     void test() {
-        open("http://localhost:9999");
+        open("http://localhost:9999/");
         $x("//input[@placeholder='Город']").setValue("Самара");
         $("span[data-test-id='date'] input").sendKeys(Keys.CONTROL + "A");
         $("span[data-test-id='date'] input").sendKeys(Keys.DELETE);
