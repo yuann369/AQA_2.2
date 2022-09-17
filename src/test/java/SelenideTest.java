@@ -1,3 +1,4 @@
+import com.codeborne.selenide.Condition;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,24 +20,26 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class SelenideTest {
 
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
     @Test
     void test() {
+        String planningDate = generateDate(4);
+
         open("http://localhost:9999/");
+
         $x("//input[@placeholder='Город']").setValue("Самара");
         $("span[data-test-id='date'] input").sendKeys(Keys.CONTROL + "A");
         $("span[data-test-id='date'] input").sendKeys(Keys.DELETE);
-
-        LocalDate date = LocalDate.now().plusDays(4);
-        String localDate = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $("span[data-test-id='date'] input").setValue(localDate);
-
-
+        $("span[data-test-id='date'] input").setValue(planningDate);
         $x("//input[@name='name']").setValue("Петров Александр");
         $x("//input[@name='phone']").setValue("+79278764312");
         $(By.className("checkbox__box")).click();
         $x("//*[text()='Забронировать']").click();
 
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(20));
-        $(byText("Встреча успешно забронирована на " + localDate));
+        $(By.className("notification__title")).shouldBe(visible, Duration.ofSeconds(25));
+        $(By.cssSelector(".notification__content")).shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate)).shouldBe(visible);
     }
 }
